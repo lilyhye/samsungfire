@@ -32,12 +32,16 @@ class ChatbotEngine:
 
     def _prepare_vector_db(self):
         """인덱스가 있으면 로드하고, 없으면 생성합니다."""
-        index_path = os.path.join("samsungfire", "data", "faiss_index")
-        pdf_path = os.path.join("samsungfire", "data", "policy.pdf")
+        # 현재 파일(chatbot_engine.py) 기준 상위 폴더의 data 폴더 경로 계산
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        base_dir = os.path.dirname(current_dir) # src의 상위인 samsungfire 폴더
+        
+        index_path = os.path.join(base_dir, "data", "faiss_index")
+        pdf_path = os.path.join(base_dir, "data", "policy.pdf")
         
         if not os.path.exists(index_path):
             if not os.path.exists(pdf_path):
-                raise FileNotFoundError(f"원본 PDF 파일을 찾을 수 없습니다: {pdf_path}")
+                raise FileNotFoundError(f"원본 PDF 파일을 찾을 수 없습니다. (시도 경로: {pdf_path})")
             
             loader = PyPDFLoader(pdf_path)
             documents = loader.load()
