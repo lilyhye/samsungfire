@@ -4,8 +4,11 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 
-# 폴더 경로 설정
-DATA_DIR = os.path.join("samsungfire", "data")
+# 현재 파일(ingest.py) 기준 상위 폴더의 data 폴더 경로 계산
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(CURRENT_DIR) # src의 상위인 samsungfire 폴더
+
+DATA_DIR = os.path.join(BASE_DIR, "data")
 PDF_PATH = os.path.join(DATA_DIR, "policy.pdf")
 INDEX_PATH = os.path.join(DATA_DIR, "faiss_index")
 
