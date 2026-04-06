@@ -13,7 +13,21 @@ st.set_page_config(
     layout="centered"
 )
 
-# 타이틀 및 설명
+# --- 경로 진단 및 디버깅 (배포 시 필수 확인용) ---
+with st.sidebar:
+    with st.expander("🔍 [디버그] 현재 서버 경로 및 파일 상태"):
+        st.write(f"현재 작업 디렉토리: `{os.getcwd()}`")
+        st.write(f"__file__ 경로: `{__file__}`")
+        # 프로젝트 루트 파일 목록 확인 (최대 2단계 깊이)
+        root_files = []
+        for root, dirs, files in os.walk(".", topdown=True):
+            level = root.replace(".", "").count(os.sep)
+            if level <= 1:
+                for f in files:
+                    root_files.append(os.path.join(root, f))
+        st.write("주요 파일 목록:")
+        st.code("\n".join(root_files[:20]))
+
 st.title("🛡️ 삼성화재 RAG 고객 상담 챗봇")
 st.markdown("""
 이 챗봇은 삼성화재의 공식 문서를 바탕으로 답변을 제공합니다.  
